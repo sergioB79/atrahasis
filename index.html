@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atrahasis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sand: #c9a96e;
+    --sand-light: #e8d5a3;
+    --sand-pale: #f5ead0;
+    --clay: #8b4513;
+    --night: #0d0b07;
+    --night-2: #1a1409;
+    --night-3: #241d0f;
+    --ink: #f0e6c8;
+    --ink-dim: #a89060;
+    --flood: #1a3a5c;
+    --flood-deep: #0a1e30;
+    --flood-light: #2d6a9f;
+    --fire: #c0392b;
+    --gold: #d4a843;
+    --accent: #7c6b2e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 30%, #2a1f08 0%, var(--night) 70%);
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(192,57,43,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(212,168,67,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .cuneiform-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0.04;
+    pointer-events: none;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    line-height: 2;
+    color: var(--sand);
+    padding: 40px;
+    word-break: break-all;
+    letter-spacing: 3px;
+    filter: blur(0.5px);
+  }
+
+  .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.3s;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(56px, 12vw, 120px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--sand-light);
+    text-shadow: 0 0 80px rgba(201,169,110,0.3);
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.5s;
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-size: clamp(14px, 2vw, 18px);
+    font-style: italic;
+    color: var(--ink-dim);
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.9s;
+    margin-bottom: 64px;
+  }
+
+  .scroll-hint {
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 1.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scroll-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--sand), transparent);
+    animation: pulse-line 2s ease-in-out infinite;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 32px;
+    position: relative;
+  }
+
+  .section-full {
+    padding: 80px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* chapter labels */
+  .chapter {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--sand);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  /* BIG PULL QUOTES */
+  .pull {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(24px, 5vw, 42px);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--sand-light);
+    margin-bottom: 32px;
+  }
+
+  .pull em {
+    font-style: normal;
+    color: var(--sand);
+    opacity: 0.8;
+  }
+
+  /* body paragraphs */
+  .body {
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--ink-dim);
+    font-weight: 300;
+    max-width: 600px;
+  }
+
+  .body strong {
+    color: var(--sand-light);
+    font-weight: 400;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 60px auto;
+    max-width: 400px;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent));
+  }
+
+  .divider::after {
+    background: linear-gradient(to left, transparent, var(--accent));
+  }
+
+  .divider-glyph {
+    color: var(--sand);
+    font-size: 18px;
+    opacity: 0.6;
+  }
+
+  /* CARD — ingredient list */
+  .card {
+    background: var(--night-3);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 2px;
+    padding: 40px;
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--sand), transparent);
+  }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--sand);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0.8;
+  }
+
+  .ingredient {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    align-items: flex-start;
+  }
+
+  .ingredient:last-child { border-bottom: none; }
+
+  .ing-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .ing-text {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    font-weight: 300;
+  }
+
+  .ing-text strong { color: var(--sand-light); font-weight: 400; }
+
+  /* FLOOD SECTION */
+  .flood-section {
+    background: linear-gradient(180deg, var(--night) 0%, var(--flood-deep) 30%, var(--flood) 60%, var(--flood-deep) 80%, var(--night) 100%);
+    padding: 120px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flood-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(to top, var(--night), transparent);
+  }
+
+  .flood-section::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, var(--night), transparent);
+  }
+
+  .flood-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .flood-pull {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(20px, 4vw, 34px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: #e8f4fc;
+    text-shadow: 0 0 40px rgba(45,106,159,0.5);
+    margin-bottom: 32px;
+  }
+
+  /* WHISPER — the wall trick */
+  .whisper-section {
+    background: var(--night-2);
+    padding: 100px 32px;
+    text-align: center;
+    border-top: 1px solid rgba(201,169,110,0.08);
+    border-bottom: 1px solid rgba(201,169,110,0.08);
+  }
+
+  .whisper-text {
+    font-family: 'Crimson Pro', serif;
+    font-size: clamp(22px, 4vw, 38px);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--ink-dim);
+    max-width: 600px;
+    margin: 0 auto 16px;
+    line-height: 1.6;
+  }
+
+  .whisper-attribution {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--sand);
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  /* CHECKLIST  — reconheces? */
+  .check-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .check-list li {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-size: 19px;
+    color: var(--ink-dim);
+    font-weight: 300;
+  }
+
+  .check-list li .tick {
+    color: var(--gold);
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  /* COMPARE TABLE */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: rgba(201,169,110,0.12);
+    border: 1px solid rgba(201,169,110,0.12);
+    margin: 40px 0;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .compare-cell {
+    background: var(--night-2);
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .compare-cell.header {
+    background: var(--night-3);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--sand);
+    text-transform: uppercase;
+    padding: 16px 20px;
+  }
+
+  .compare-name {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--sand-light);
+    margin-bottom: 8px;
+  }
+
+  .compare-label {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-dim);
+    font-weight: 300;
+  }
+
+  /* TWIST — final reveal */
+  .twist-section {
+    background: var(--night);
+    padding: 100px 32px;
+    text-align: center;
+    position: relative;
+  }
+
+  .twist-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(201,169,110,0.04) 0%, transparent 70%);
+  }
+
+  .big-number {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(80px, 18vw, 180px);
+    font-weight: 900;
+    color: rgba(201,169,110,0.08);
+    line-height: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .twist-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .stat-card {
+    background: var(--night-3);
+    border: 1px solid rgba(201,169,110,0.12);
+    padding: 28px 24px;
+    text-align: left;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, rgba(201,169,110,0.06), transparent);
+  }
+
+  .stat-num {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    color: var(--sand);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 15px;
+    color: var(--ink-dim);
+    font-weight: 300;
+    line-height: 1.4;
+  }
+
+  /* CLOSING */
+  .closing {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+    text-align: center;
+  }
+
+  .closing .pull {
+    font-size: clamp(18px, 3vw, 28px);
+  }
+
+  .closing-body {
+    font-size: 18px;
+    color: var(--ink-dim);
+    font-weight: 300;
+    line-height: 1.9;
+    font-style: italic;
+  }
+
+  .colophon {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--ink-dim);
+    opacity: 0.3;
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-line {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* intersection observer reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.35s; }
+
+  @media (max-width: 600px) {
+    .compare { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .card { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="cuneiform-bg" aria-hidden="true">𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲𒀭𒂗𒍪𒀭𒂗𒍪𒀭𒈗𒀭𒉘𒅗𒁲</div>
+
+  <p class="eyebrow">Uma história com 4000 anos</p>
+  <h1 class="hero-title">ATRAHASIS</h1>
+  <p class="hero-subtitle">antes de Noé — antes do Génesis — havia isto</p>
+
+  <div class="scroll-hint">
+    <span>continua</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+
+<!-- SECTION 1: Antes dos humanos -->
+<section class="section">
+  <div class="reveal">
+    <span class="chapter">I — O princípio</span>
+    <h2 class="pull">No início, só existiam deuses.<br><em>E o problema era o trabalho.</em></h2>
+    <p class="body">
+      Os deuses menores eram obrigados a cavar rios, construir canais, manter o mundo em funcionamento.<br><br>
+      Fartaram-se.<br>
+      Rebelaram-se.
+    </p>
+  </div>
+</section>
+
+
+<!-- SECTION 2: Criação dos humanos -->
+<section class="section">
+  <div class="reveal">
+    <span class="chapter">II — A solução</span>
+    <h2 class="pull">Vamos criar algo que faça o trabalho por nós.</h2>
+  </div>
+
+  <div class="card reveal reveal-delay-1">
+    <p class="card-title">A receita original</p>
+    <div class="ingredient">
+      <span class="ing-icon">🏺</span>
+      <span class="ing-text"><strong>Barro</strong> — matéria-prima, abundante, moldável</span>
+    </div>
+    <div class="ingredient">
+      <span class="ing-icon">🩸</span>
+      <span class="ing-text"><strong>Sangue de um deus sacrificado</strong> — a centelha, o animus, o que distingue do inerte</span>
+    </div>
+    <div class="ingredient">
+      <span class="ing-icon">👁️</span>
+      <span class="ing-text"><strong>O resultado</strong> — um ser que trabalha, que serve, que substitui os deuses menores</span>
+    </div>
+  </div>
+
+  <p class="body reveal reveal-delay-2">
+    Os deuses descansam.<br>
+    Os humanos trabalham.<br>
+    O acordo está feito.
+  </p>
+</section>
+
+
+<!-- DIVIDER -->
+<div class="divider"><span class="divider-glyph">◆</span></div>
+
+
+<!-- SECTION 3: Barulho -->
+<section class="section">
+  <div class="reveal">
+    <span class="chapter">III — O problema inesperado</span>
+    <h2 class="pull">Os humanos multiplicaram-se.<br><em>E eram incrivelmente barulhentos.</em></h2>
+    <p class="body">
+      Enlil, o deus da tempestade e senhor dos deuses, não conseguia dormir.<br><br>
+      Não por crueldade — por irritação.<br>
+      A terra estava cheia de ruído.
+    </p>
+  </div>
+</section>
+
+<!-- SECTION 4: Tentativas de extinção -->
+<section class="section">
+  <div class="reveal">
+    <span class="chapter">IV — Tentativas</span>
+    <h2 class="pull">Três vezes Enlil tentou.<br><em>Três vezes Enki interferiu.</em></h2>
+  </div>
+
+  <div class="card reveal reveal-delay-1">
+    <p class="card-title">Antes do dilúvio — as pragas menores</p>
+    <div class="ingredient">
+      <span class="ing-icon">🤒</span>
+      <span class="ing-text"><strong>Pragas e doenças</strong> — Enki avisou os humanos. Sobreviveram.</span>
+    </div>
+    <div class="ingredient">
+      <span class="ing-icon">🌵</span>
+      <span class="ing-text"><strong>Seca e fome</strong> — Enki avisou de novo. Sobreviveram.</span>
+    </div>
+    <div class="ingredient">
+      <span class="ing-icon">🌊</span>
+      <span class="ing-text"><strong>O dilúvio</strong> — desta vez, Enlil fez os outros deuses jurarem segredo.</span>
+    </div>
+  </div>
+
+  <p class="body reveal reveal-delay-2">
+    Mas Enki não é um deus de regras — é um deus de <em>brechas.</em>
+  </p>
+</section>
+
+
+<!-- WHISPER -->
+<section class="whisper-section">
+  <div class="reveal">
+    <p class="whisper-text">"Ó parede de canas, escuta-me.<br>Ó parede, presta atenção."</p>
+    <p class="whisper-attribution">Enki — dirigindo-se à parede atrás da qual estava Atrahasis</p>
+  </div>
+</section>
+
+
+<!-- FLOOD SECTION -->
+<section class="flood-section">
+  <div class="flood-content">
+    <div class="reveal">
+      <span class="chapter" style="color: rgba(232,244,252,0.5)">V — O dilúvio</span>
+      <h2 class="flood-pull">
+        Sem quebrar nenhuma regra,<br>
+        Enki encontrou a saída.<br><br>
+        <em style="opacity:0.7; font-style:italic; font-family:'Crimson Pro'; font-weight:300">
+          Não disse nada a nenhum humano.<br>
+          Mas a parede ouviu tudo.
+        </em>
+      </h2>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <p class="body" style="color: rgba(232,244,252,0.6); margin: 0 auto; max-width: 500px; text-align: center;">
+        Atrahasis construiu o barco.<br>
+        Levou a família. Levou os animais.<br>
+        Sobreviveu ao fim do mundo.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECTION 5: Depois do dilúvio -->
+<section class="section">
+  <div class="reveal">
+    <span class="chapter">VI — Depois</span>
+    <h2 class="pull">As aves foram enviadas.<br><em>A história que conheces já estava aqui.</em></h2>
+    <p class="body">
+      Quando a água baixou, Atrahasis enviou aves para ver se havia terra firme.<br>
+      Quando voltaram com ramos, sabia que podia sair.<br><br>
+      Os deuses perceberam que precisavam dos humanos afinal.<br>
+      Fizeram um ajuste: introduziram <strong>mortalidade</strong>, <strong>infertilidade</strong>, <strong>limites ao crescimento.</strong><br><br>
+      Problema resolvido — desta vez com nuance.
+    </p>
+  </div>
+</section>
+
+
+<!-- DIVIDER -->
+<div class="divider"><span class="divider-glyph">◆</span></div>
+
+
+<!-- SECTION 6: Reconheces? -->
+<section class="section">
+  <div class="reveal">
+    <span class="chapter">VII — A questão</span>
+    <h2 class="pull">Reconheces a história?</h2>
+    <p class="body">Espera. Antes de responderes.</p>
+  </div>
+
+  <ul class="check-list reveal reveal-delay-1">
+    <li><span class="tick">◆</span> Aviso secreto ao "escolhido"</li>
+    <li><span class="tick">◆</span> Construção de uma embarcação</li>
+    <li><span class="tick">◆</span> Família e animais embarcados</li>
+    <li><span class="tick">◆</span> Aves enviadas para reconhecimento</li>
+    <li><span class="tick">◆</span> Recomeço da humanidade após o dilúvio</li>
+    <li><span class="tick">◆</span> O "escolhido" faz sacrifícios no final</li>
+  </ul>
+
+  <p class="body reveal reveal-delay-2">
+    É literalmente <strong>o mesmo guião.</strong>
+  </p>
+</section>
+
+
+<!-- COMPARE -->
+<section class="section" style="padding-top: 0;">
+  <div class="reveal">
+    <span class="chapter" style="text-align:center; display:block;">VIII — A linha evolutiva</span>
+  </div>
+
+  <div class="compare reveal reveal-delay-1">
+    <div class="compare-cell header">Versão</div>
+    <div class="compare-cell header">Nome</div>
+    <div class="compare-cell header">Contexto</div>
+
+    <div class="compare-cell">
+      <div class="compare-name">Atrahasis</div>
+      <div class="compare-label">~1700 a.C.</div>
+    </div>
+    <div class="compare-cell">
+      <div class="compare-name">Original</div>
+      <div class="compare-label">Mesopotâmia</div>
+    </div>
+    <div class="compare-cell">
+      <div class="compare-label">Politeísta. Deuses em conflito. Motivação: barulho.</div>
+    </div>
+
+    <div class="compare-cell">
+      <div class="compare-name">Utnapishtim</div>
+      <div class="compare-label">Épico de Gilgamesh</div>
+    </div>
+    <div class="compare-cell">
+      <div class="compare-name">Reboot</div>
+      <div class="compare-label">Mesopotâmia</div>
+    </div>
+    <div class="compare-cell">
+      <div class="compare-label">A história entra num épico maior. Ajustes menores.</div>
+    </div>
+
+    <div class="compare-cell">
+      <div class="compare-name">Noé</div>
+      <div class="compare-label">Génesis</div>
+    </div>
+    <div class="compare-cell">
+      <div class="compare-name">Remake</div>
+      <div class="compare-label">Monoteísta</div>
+    </div>
+    <div class="compare-cell">
+      <div class="compare-label">Um deus. Motivação: corrupção moral. Tom: autoridade.</div>
+    </div>
+  </div>
+
+  <div class="reveal reveal-delay-2">
+    <p class="body">
+      Não é cópia — é <strong>reinterpretação estratégica</strong> para um novo sistema de crenças.<br>
+      A espinha dorsal ficou intacta. O sentido foi reescrito.
+    </p>
+  </div>
+</section>
+
+
+<!-- DIVIDER -->
+<div class="divider"><span class="divider-glyph">◆</span></div>
+
+
+<!-- TWIST SECTION -->
+<section class="twist-section">
+  <div class="big-twist-bg reveal" style="font-family: 'Cinzel', serif; font-size: clamp(14px,2vw,18px); color: rgba(201,169,110,0.04); position:absolute; top:40px; left:0; right:0; text-align:center; letter-spacing: 6px; font-weight:900; text-transform:uppercase; pointer-events:none;">
+    MAS ESPERA
+  </div>
+
+  <div class="twist-content">
+    <div class="reveal">
+      <span class="chapter" style="text-align:center; display:block;">IX — O twist</span>
+      <h2 class="pull" style="text-align:center;">
+        Nada disto é sobre<br>
+        Noé ou Atrahasis.
+      </h2>
+      <p class="body" style="text-align:center; margin: 0 auto 48px;">
+        A história original é mais antiga do que as tábuas que a preservam.<br>
+        Vem de uma civilização que hoje chamamos de «Médio Oriente».<br>
+        Que hoje chamamos de atrasada. De perigosa. De outra.
+      </p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <h2 class="pull" style="text-align:center; font-size: clamp(20px,4vw,36px); margin-bottom: 48px;">
+        Estamos a falar do Irão.<br>
+        <em style="font-size:0.7em; opacity:0.6;">A mesma região. A mesma tradição.</em>
+      </h2>
+    </div>
+
+    <div class="stats-grid reveal reveal-delay-2">
+      <div class="stat-card">
+        <div class="stat-num">5.º</div>
+        <div class="stat-label">lugar mundial em licenciados STEM por ano — 335.000 graduados anuais</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">97%</div>
+        <div class="stat-label">taxa de literacia nos jovens entre 15 e 24 anos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">60%</div>
+        <div class="stat-label">dos estudantes universitários são mulheres</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1898</div>
+        <div class="stat-label">primeiro programa organizado de reforma educacional — décadas antes de muitos países europeus</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="reveal">
+    <span class="chapter" style="text-align:center; display:block;">Coda</span>
+    <h2 class="pull">A arrogância tem pouca memória.</h2>
+    <p class="closing-body">
+      A matemática que usas para calcular juros veio dali.<br>
+      A astronomia que orientou os navegadores veio dali.<br>
+      O arquivo mais antigo da história do dilúvio veio dali.<br><br>
+      A próxima vez que vires notícias sobre o «Médio Oriente»,<br>
+      lembra-te: estás a ver um espelho mal iluminado.
+    </p>
+  </div>
+
+  <div class="divider reveal reveal-delay-1"><span class="divider-glyph">◆</span></div>
+
+  <p class="colophon">Atrahasis · ca. 1700 a.C. · Mesopotâmia · A história antes das histórias</p>
+</section>
+
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
